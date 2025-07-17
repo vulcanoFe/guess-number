@@ -2,7 +2,11 @@ import { useState } from "react";
 import { Alert, StyleSheet, TextInput, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 
-function StartGameScreen() {
+interface StartGameScreenProps {
+	onPickNumber: (pickedNumber: number) => void;
+}
+
+function StartGameScreen({ onPickNumber }: StartGameScreenProps) {
 
 	const [enteredNumber, setEnteredNumber] = useState('');
 
@@ -20,14 +24,7 @@ function StartGameScreen() {
 			);
 			return;
 		}
-		Alert.alert(
-			'Confirm your choice?',
-			`You selected: ${chosenNumber}`,
-			[
-				{ text: 'Confirm', style: 'default' },
-				{ text: 'Cancel', style: 'destructive', onPress: resetInputHandler }
-			]
-		);
+		onPickNumber(chosenNumber);
 	}
 
 	function resetInputHandler() {
