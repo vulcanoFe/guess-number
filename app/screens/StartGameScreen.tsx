@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Alert, StyleSheet, TextInput, View } from "react-native";
-import PrimaryButton from "../components/PrimaryButton";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
+import PrimaryButton from "../components/ui/PrimaryButton";
 import Colors from "../constants/colors";
 
 interface StartGameScreenProps {
@@ -34,6 +34,7 @@ function StartGameScreen({ onPickNumber }: StartGameScreenProps) {
 
 	return (
 		<View style={styles.inputContainer}>
+			<Text style={styles.numberInputLabel}>Enter a number between 1 and 99</Text>
 			<TextInput
 				style={styles.numberInput}
 				maxLength={2}
@@ -68,16 +69,24 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 6,
 	},
+	numberInputLabel: {
+		color: Colors.accent500,
+		fontSize: 16,
+		fontWeight: 'bold',
+		marginVertical: 8
+	},
 	numberInput: {
 		height: 50,
-		width: 50,
+		width: 80,
 		fontSize: 32,
 		borderBottomColor: Colors.accent500,
 		borderBottomWidth: 2,
+		borderRadius: 6,
 		color: Colors.accent500,
 		marginVertical: 8,
 		fontWeight: 'bold',
-		textAlign: 'center'
+		textAlign: 'center',
+		backgroundColor: Colors.primary700
 	},
 	buttonsContainer: {
 		flexDirection: 'row',

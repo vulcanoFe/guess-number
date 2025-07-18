@@ -3,6 +3,8 @@ import { ImageBackground, SafeAreaView, StyleSheet } from "react-native";
 
 import { useState } from "react";
 import Colors from "./constants/colors";
+import { GameResult } from "./models/GameResult";
+import GameOverScreen from "./screens/GameOverScreen";
 import GameScreen from "./screens/GameScreen";
 import StartGameScreen from "./screens/StartGameScreen";
 
@@ -14,15 +16,36 @@ export const options = {
 export default function Index() {
 
 	const [userNumber, setUserNumber] = useState(0);
+	const [gameIsOver, setGameIsOver] = useState(true);
+	const [gameHistory, setGameHistory] = useState<GameResult[]>([]);
 
 	function pickedNumberHandler(pickedNumber: number) {
 		setUserNumber(pickedNumber);
+		setGameIsOver(false);
+	}
+
+	function gameOverHandler(rounds: number) {
+		const newGameResult: GameResult = {
+			guessedNumber: userNumber,
+			rounds: rounds
+		};
+		setGameHistory((prevHistory) => [...prevHistory, newGameResult]);
+		setGameIsOver(true);
+	}
+
+	function startNewGame() {
+		setUserNumber(0);
+		setGameIsOver(false);
 	}
 
 	let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
 
 	if (userNumber && userNumber > 0) {
-		screen = <GameScreen />;
+		screen = <GameScreen numberToGuess={userNumber} onGameOver={gameOverHandler} />;
+	}
+
+	if (gameIsOver && userNumber) {
+		screen = <GameOverScreen onStartNewGame={startNewGame} gameHistory={gameHistory} />
 	}
 
 	return (
