@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import Title from "../components/ui/Title";
 import { GameResult } from "../models/GameResult";
 
 interface GameOverScreenProps {
@@ -10,7 +11,7 @@ interface GameOverScreenProps {
 function GameOverScreen({ onStartNewGame, gameHistory }: GameOverScreenProps) {
 	return (
 		<View style={style.gameScreen}>
-			<Text>Game is Over!</Text>
+			<Title>End of the game!</Title>
 			<View>
 				<PrimaryButton onPressHandler={onStartNewGame}>Start New Game</PrimaryButton>
 			</View>

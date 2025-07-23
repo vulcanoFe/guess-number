@@ -5,9 +5,15 @@
  * @param exclude 
  * @returns 
  */
-export function generateRandomBetween(min: number, max: number) {
+export function generateRandomBetween(min: number, max: number, exclude: number) {
 	const rndNum = Math.floor(Math.random() * (max - min)) + min;
-	return rndNum;
+	if (rndNum === exclude) {
+		console.warn(`Generated number ${rndNum} is equal to the excluded number ${exclude}. Regenerating...`);
+		return generateRandomBetween(min, max, exclude); // Recursively call until a valid number is found
+	}
+	else {
+		return rndNum;
+	}
 }
 
-export default {}
+export default {};

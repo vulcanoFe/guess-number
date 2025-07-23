@@ -1,7 +1,10 @@
 import { Alert, StyleSheet, Text, View } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import NumberContainer from "../components/game/NumberContainer";
+import Card from "../components/ui/Card";
+import InstructionText from "../components/ui/InstructionText";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Title from "../components/ui/Title";
 import { generateRandomBetween } from "../utilities/gameActions";
@@ -17,7 +20,7 @@ function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 	const [maxBoundary, setMaxBoundary] = useState(100);
 	const [rounds, setRounds] = useState(1);
 
-	const initialGuess = generateRandomBetween(minBoundary, maxBoundary);
+	const initialGuess = generateRandomBetween(1, 100, numberToGuess);
 	const [currentGuess, setCurrentGuess] = useState(initialGuess);
 	useEffect(() => {
 		if (currentGuess === numberToGuess) {
@@ -45,7 +48,7 @@ function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 			setMaxBoundary(newMax);
 		}
 		console.log(`New boundaries: ${newMin} - ${newMax}`);
-		let nextGuess: number = generateRandomBetween(newMin, newMax);
+		let nextGuess: number = generateRandomBetween(newMin, newMax, currentGuess);
 		setCurrentGuess(nextGuess);
 		setRounds((prevRounds) => prevRounds + 1);
 	}
@@ -57,13 +60,21 @@ function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 		<View style={style.gameScreen}>
 			<Title>Opponent&apos;s Guess</Title>
 			<NumberContainer>{currentGuess}</NumberContainer>
-			<View>
-				<Text>Higher or Lower?</Text>
-				<View>
-					<PrimaryButton onPressHandler={handleLower}>-</PrimaryButton>
-					<PrimaryButton onPressHandler={handleHigher}>+</PrimaryButton>
+			<Card>
+				<InstructionText style={style.InstructionText}>Higher or Lower?</InstructionText>
+				<View style={style.buttonsContainer}>
+					<View style={style.buttonContainer}>
+						<PrimaryButton onPressHandler={handleLower}>
+							<Ionicons name="remove-circle-outline" size={24} color="white" />
+						</PrimaryButton>
+					</View>
+					<View style={style.buttonContainer}>
+						<PrimaryButton onPressHandler={handleHigher}>
+							<Ionicons name="add-circle-outline" size={24} color="white" />
+						</PrimaryButton>
+					</View>
 				</View>
-			</View>
+			</Card>
 			<View>
 				<Text>{rounds}</Text>
 			</View>
@@ -75,6 +86,16 @@ const style = StyleSheet.create({
 	gameScreen: {
 		flex: 1,
 		padding: 24
+	},
+	InstructionText: {
+		marginBottom: 12,
+	},
+	buttonsContainer: {
+		flexDirection: 'row',
+		marginTop: 16,
+	},
+	buttonContainer: {
+		flex: 1
 	}
 });
 
