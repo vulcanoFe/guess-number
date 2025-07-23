@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
@@ -59,6 +59,12 @@ function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 	return (
 		<View style={style.gameScreen}>
 			<Title>Opponent&apos;s Guess</Title>
+			<View style={style.roundsContainer}>
+				<InstructionText style={style.roundsText}>
+					{rounds === 1 ? 'Attempt: ' : 'Attempts: '}
+					{rounds}
+				</InstructionText>
+			</View>
 			<NumberContainer>{currentGuess}</NumberContainer>
 			<Card>
 				<InstructionText style={style.InstructionText}>Higher or Lower?</InstructionText>
@@ -75,9 +81,6 @@ function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 					</View>
 				</View>
 			</Card>
-			<View>
-				<Text>{rounds}</Text>
-			</View>
 		</View>
 	)
 }
@@ -96,6 +99,17 @@ const style = StyleSheet.create({
 	},
 	buttonContainer: {
 		flex: 1
+	},
+	roundsContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		paddingHorizontal: 26,
+	},
+	roundsText: {
+		fontSize: 24,
+		fontFamily: 'open-sans-bold',
+		color: '#fff',
+		textAlign: 'center',
 	}
 });
 

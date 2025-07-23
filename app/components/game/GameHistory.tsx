@@ -19,7 +19,7 @@ function GameHistory({ gameHistory }: GameHistoryProps) {
 			{gameHistory?.map((result, index) => (
 				<Text key={index} style={style.historyItem}>
 					Guessed: <Text style={style.historyNumber}>{result.guessedNumber}</Text>,
-					Tentatives: <Text style={style.historyNumber}>{result.rounds}</Text>
+					Attempts: <Text style={style.historyNumber}>{result.rounds}</Text>
 				</Text>
 			))}
 		</Card>
