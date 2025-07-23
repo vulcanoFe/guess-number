@@ -28,20 +28,20 @@ function GameHistory({ gameHistory }: GameHistoryProps) {
 
 const style = StyleSheet.create({
 	historyTitle: {
-		fontWeight: 'bold',
 		color: '#fff',
 		fontSize: 24,
 	},
 	historyItem: {
+		fontFamily: 'open-sans',
 		fontSize: 16,
 		color: '#fff',
-		marginVertical: 4,
-		paddingHorizontal: 10,
+		paddingBottom: 4,
+		paddingHorizontal: 34,
 		borderBottomWidth: 1,
 		borderBottomColor: '#ccc',
 	},
 	historyNumber: {
-		fontWeight: 'bold',
+		fontFamily: 'open-sans-bold',
 		color: Colors.accent500,
 	}
 });
