@@ -16,9 +16,9 @@ function InstructionText({ children, style }: InstructionTextProps) {
 
 const styles = StyleSheet.create({
 	instructionText: {
+		fontFamily: 'open-sans',
 		color: Colors.accent500,
 		fontSize: 16,
-		fontWeight: 'bold',
 		marginVertical: 8
 	}
 });
