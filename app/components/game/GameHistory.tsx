@@ -36,7 +36,7 @@ const style = StyleSheet.create({
 		fontSize: 16,
 		color: '#fff',
 		paddingBottom: 4,
-		paddingHorizontal: 34,
+		paddingHorizontal: 26,
 		borderBottomWidth: 1,
 		borderBottomColor: '#ccc',
 	},

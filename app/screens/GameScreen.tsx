@@ -14,24 +14,32 @@ interface GameScreenProps {
 	onGameOver: (rounds: number) => void;
 }
 
+// Outside the component to maintain state across renders
+let minBoundary = 1;
+let maxBoundary = 100;
+
 function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 
-	const [minBoundary, setMinBoundary] = useState(1);
-	const [maxBoundary, setMaxBoundary] = useState(100);
-	const [rounds, setRounds] = useState(1);
 
 	const initialGuess = generateRandomBetween(1, 100, numberToGuess);
 	const [currentGuess, setCurrentGuess] = useState(initialGuess);
+	const [rounds, setRounds] = useState(1);
+
+	// re-executed when currentGuess or numberToGuess changes
 	useEffect(() => {
 		if (currentGuess === numberToGuess) {
 			onGameOver(rounds);
 		}
 	}, [currentGuess, numberToGuess, onGameOver, rounds]);
 
-	function nextGuessHandler(direction: 'higher' | 'lower') {
-		let newMin = minBoundary;
-		let newMax = maxBoundary;
+	// re-executed when the component mounts, because of the empty dependency array
+	// This sets the initial boundaries for the game
+	useEffect(() => {
+		minBoundary = 1;
+		maxBoundary = 100;
+	}, []);
 
+	function nextGuessHandler(direction: 'higher' | 'lower') {
 		if (
 			(direction === 'higher' && currentGuess > numberToGuess) ||
 			(direction === 'lower' && currentGuess < numberToGuess)
@@ -40,15 +48,12 @@ function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 			return;
 		}
 
-		if (direction === 'higher') {
-			newMin = currentGuess + 1;
-			setMinBoundary(newMin);
+		if (direction === 'lower') {
+			maxBoundary = currentGuess;
 		} else {
-			newMax = currentGuess - 1;
-			setMaxBoundary(newMax);
+			minBoundary = currentGuess + 1;
 		}
-		console.log(`New boundaries: ${newMin} - ${newMax}`);
-		let nextGuess: number = generateRandomBetween(newMin, newMax, currentGuess);
+		const nextGuess: number = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
 		setCurrentGuess(nextGuess);
 		setRounds((prevRounds) => prevRounds + 1);
 	}
