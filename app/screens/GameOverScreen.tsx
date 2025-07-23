@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
+import GameHistory, { GameResult } from "../components/game/GameHistory";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Title from "../components/ui/Title";
-import { GameResult } from "../models/GameResult";
 
 interface GameOverScreenProps {
 	onStartNewGame: () => void;
@@ -12,19 +13,12 @@ function GameOverScreen({ onStartNewGame, gameHistory }: GameOverScreenProps) {
 	return (
 		<View style={style.gameScreen}>
 			<Title>End of the game!</Title>
-			<View>
-				<PrimaryButton onPressHandler={onStartNewGame}>Start New Game</PrimaryButton>
+			<View style={style.buttonContainer}>
+				<PrimaryButton onPressHandler={onStartNewGame}>
+					<Ionicons name="refresh" size={24} color="white" />
+				</PrimaryButton>
 			</View>
-			<View>
-				{gameHistory && gameHistory.length > 0 && (
-					<Text style={style.historyTitle}>Game History:</Text>
-				)}
-				{gameHistory?.map((result, index) => (
-					<Text key={index}>
-						Guess: {result.guessedNumber}, Rounds: {result.rounds}
-					</Text>
-				))}
-			</View>
+			<GameHistory gameHistory={gameHistory} />
 		</View>
 	)
 }
@@ -34,11 +28,10 @@ const style = StyleSheet.create({
 		flex: 1,
 		padding: 24
 	},
-	historyTitle: {
-		fontSize: 18,
-		fontWeight: 'bold',
-		marginBottom: 12,
-		color: '#fff'
+	buttonContainer: {
+		marginTop: 20,
+		marginBottom: 20,
+		alignItems: 'center',
 	}
 });
 
