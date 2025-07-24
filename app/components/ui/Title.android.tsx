@@ -6,9 +6,11 @@ interface TitleProps {
 }
 
 function Title({ children }: TitleProps) {
+
 	return (
 		<Text style={style.title}>{children}</Text>
 	);
+
 }
 
 const style = StyleSheet.create({
@@ -21,8 +23,8 @@ const style = StyleSheet.create({
 		borderColor: Colors.white,
 		borderRadius: 8,
 		padding: 12,
-		maxWidth: '80%',
-		width: 300,
+		maxWidth: '80%', // 80% if the screen is narrow
+		width: 300, // 300 if the screen is wide enough
 	}
 });
 
