@@ -1,4 +1,4 @@
-import { Alert, FlatList, StyleSheet, View } from "react-native";
+import { Alert, FlatList, StyleSheet, useWindowDimensions, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
@@ -20,6 +20,8 @@ let minBoundary = 1;
 let maxBoundary = 100;
 
 function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
+
+	const { width } = useWindowDimensions();
 
 	const initialGuess = generateRandomBetween(1, 100, numberToGuess);
 	const [currentGuess, setCurrentGuess] = useState(initialGuess);
@@ -63,36 +65,66 @@ function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 	const handleLower = () => nextGuessHandler('lower');
 	const handleHigher = () => nextGuessHandler('higher');
 
+	let content = <>
+		<NumberContainer>{currentGuess}</NumberContainer>
+		<Card>
+			<InstructionText style={style.InstructionText}>Higher or Lower?</InstructionText>
+			<View style={style.buttonsContainer}>
+				<View style={style.buttonContainer}>
+					<PrimaryButton onPressHandler={handleLower}>
+						<Ionicons name="remove-circle-outline" size={24} color="white" />
+					</PrimaryButton>
+				</View>
+				<View style={style.buttonContainer}>
+					<PrimaryButton onPressHandler={handleHigher}>
+						<Ionicons name="add-circle-outline" size={24} color="white" />
+					</PrimaryButton>
+				</View>
+			</View>
+		</Card>
+		<View style={style.logContainer}>
+			<FlatList data={guessAttempts} renderItem={({ item, index }) => (
+				<GuessLogItem guessAttempt={item} attemptsNumber={index + 1} />
+			)} />
+		</View>
+	</>
+
+	if (width > 500) {
+		content = <>
+			<View style={style.horizontalContainer}>
+				<View style={style.horizontalChildren}>
+					<Card>
+						<InstructionText style={style.InstructionText}>Higher or Lower?</InstructionText>
+						<View style={style.buttonsContainer}>
+							<View style={style.buttonContainer}>
+								<PrimaryButton onPressHandler={handleLower}>
+									<Ionicons name="remove-circle-outline" size={24} color="white" />
+								</PrimaryButton>
+							</View>
+							<NumberContainer>{currentGuess}</NumberContainer>
+							<View style={style.buttonContainer}>
+								<PrimaryButton onPressHandler={handleHigher}>
+									<Ionicons name="add-circle-outline" size={24} color="white" />
+								</PrimaryButton>
+							</View>
+						</View>
+					</Card>
+				</View>
+				<View style={style.horizontalChildren}>
+					<View style={style.logContainer}>
+						<FlatList data={guessAttempts} renderItem={({ item, index }) => (
+							<GuessLogItem guessAttempt={item} attemptsNumber={index + 1} />
+						)} />
+					</View>
+				</View>
+			</View>
+		</>
+	}
+
 	return (
 		<View style={style.gameScreen}>
 			<Title>Opponent&apos;s Guess</Title>
-			<View style={style.roundsContainer}>
-				<InstructionText style={style.roundsText}>
-					{rounds === 1 ? 'Attempt: ' : 'Attempts: '}
-					{rounds}
-				</InstructionText>
-			</View>
-			<NumberContainer>{currentGuess}</NumberContainer>
-			<Card>
-				<InstructionText style={style.InstructionText}>Higher or Lower?</InstructionText>
-				<View style={style.buttonsContainer}>
-					<View style={style.buttonContainer}>
-						<PrimaryButton onPressHandler={handleLower}>
-							<Ionicons name="remove-circle-outline" size={24} color="white" />
-						</PrimaryButton>
-					</View>
-					<View style={style.buttonContainer}>
-						<PrimaryButton onPressHandler={handleHigher}>
-							<Ionicons name="add-circle-outline" size={24} color="white" />
-						</PrimaryButton>
-					</View>
-				</View>
-			</Card>
-			<View style={style.logContainer}>
-				<FlatList data={guessAttempts} renderItem={({ item, index }) => (
-					<GuessLogItem guessAttempt={item} attemptsNumber={index + 1} />
-				)} />
-			</View>
+			{content}
 		</View>
 	)
 }
@@ -102,12 +134,26 @@ const style = StyleSheet.create({
 		flex: 1,
 		padding: 24,
 		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	horizontalContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-around',
+		width: '100%',
+	},
+	horizontalChildren: {
+		flex: 1,
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 	InstructionText: {
-		marginBottom: 12,
 	},
 	buttonsContainer: {
 		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
 		marginTop: 16,
 	},
 	buttonContainer: {
@@ -118,11 +164,15 @@ const style = StyleSheet.create({
 		alignItems: 'center',
 		paddingHorizontal: 26,
 	},
+	horizontalRoundsContainer: {
+		padding: 0
+	},
 	roundsText: {
 		fontSize: 24,
 		fontFamily: 'open-sans-bold',
 		color: '#fff',
 		textAlign: 'center',
+		marginVertical: 0,
 	},
 	logContainer: {
 		flex: 1,

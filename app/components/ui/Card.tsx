@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: isSmallDevice ? 18 : 36,
-		marginHorizontal: 24,
+		marginHorizontal: 4,
 		borderRadius: 8,
 		padding: isSmallDevice ? 12 : 16,
 		backgroundColor: Colors.primary800,
