@@ -100,7 +100,8 @@ function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 const style = StyleSheet.create({
 	gameScreen: {
 		flex: 1,
-		padding: 24
+		padding: 24,
+		alignItems: 'center',
 	},
 	InstructionText: {
 		marginBottom: 12,

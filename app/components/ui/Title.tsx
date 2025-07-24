@@ -17,14 +17,14 @@ const style = StyleSheet.create({
 	title: {
 		fontFamily: 'open-sans-bold',
 		fontSize: 24,
-		fontWeight: 'bold',
 		color: Colors.white,
 		textAlign: 'center',
 		borderWidth: 2,
 		borderColor: Colors.white,
 		borderRadius: 8,
 		padding: 12,
-		marginVertical: 24,
+		maxWidth: '80%', // 80% if the screen is narrow
+		width: 300, // 300 if the screen is wide enough
 	}
 });
 
