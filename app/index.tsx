@@ -1,9 +1,9 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { ImageBackground, SafeAreaView, StyleSheet } from "react-native";
 
-import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
-import { useState } from "react";
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect, useState } from "react";
 import { GameResult } from "./components/game/GameHistory";
 import Colors from "./constants/colors";
 import GameOverScreen from "./screens/GameOverScreen";
@@ -14,6 +14,9 @@ import StartGameScreen from "./screens/StartGameScreen";
 export const options = {
 	headerShown: false,
 };
+
+// Prevent splash screen from auto-hiding
+SplashScreen.preventAutoHideAsync();
 
 export default function Index() {
 
@@ -26,8 +29,16 @@ export default function Index() {
 		'open-sans-bold': require('../assets/fonts/OpenSans-Bold.ttf')
 	});
 
+	// Hide splash screen when fonts are loaded
+	useEffect(() => {
+		if (fontsLoaded) {
+			SplashScreen.hideAsync();
+		}
+	}, [fontsLoaded]);
+
 	if (!fontsLoaded) {
-		return <AppLoading />; // or a loading indicator
+		// Don't render anything until fonts are loaded
+		return null;
 	}
 
 	function pickedNumberHandler(pickedNumber: number) {

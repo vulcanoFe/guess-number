@@ -1,7 +1,8 @@
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, FlatList, StyleSheet, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
+import GuessLogItem from "../components/game/GuessLogItem";
 import NumberContainer from "../components/game/NumberContainer";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
@@ -20,10 +21,10 @@ let maxBoundary = 100;
 
 function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 
-
 	const initialGuess = generateRandomBetween(1, 100, numberToGuess);
 	const [currentGuess, setCurrentGuess] = useState(initialGuess);
 	const [rounds, setRounds] = useState(1);
+	const [guessAttempts, setGuessAttempts] = useState([initialGuess]);
 
 	// re-executed when currentGuess or numberToGuess changes
 	useEffect(() => {
@@ -56,6 +57,7 @@ function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 		const nextGuess: number = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
 		setCurrentGuess(nextGuess);
 		setRounds((prevRounds) => prevRounds + 1);
+		setGuessAttempts((prevAttempts) => [nextGuess, ...prevAttempts]);
 	}
 
 	const handleLower = () => nextGuessHandler('lower');
@@ -86,6 +88,11 @@ function GameScreen({ numberToGuess, onGameOver }: GameScreenProps) {
 					</View>
 				</View>
 			</Card>
+			<View style={style.logContainer}>
+				<FlatList data={guessAttempts} renderItem={({ item, index }) => (
+					<GuessLogItem guessAttempt={item} attemptsNumber={index + 1} />
+				)} />
+			</View>
 		</View>
 	)
 }
@@ -115,7 +122,13 @@ const style = StyleSheet.create({
 		fontFamily: 'open-sans-bold',
 		color: '#fff',
 		textAlign: 'center',
-	}
+	},
+	logContainer: {
+		flex: 1,
+		marginTop: 16,
+		paddingHorizontal: 26,
+		alignItems: 'center',
+	},
 });
 
 export default GameScreen;
